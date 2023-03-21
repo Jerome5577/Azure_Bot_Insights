@@ -192,12 +192,12 @@ class BookingDialog(CancelAndHelpDialog):
         
         # If Not OK
         else:
-            sorry_msg = "Bye"
+            sorry_msg = "Sorry for not answering your wishes. Bye"
             prompt_sorry_msg = MessageFactory.text(sorry_msg, sorry_msg, InputHints.ignoring_input)
+
+            self.telemetry_client.track_trace("NO answer", booking_details, "ERROR")
             self.telemetry_client.track_trace("CHAT_HISTORY_ERROR", self.chat_history, "ERROR")
-            self.telemetry_client.track_trace("NO answer", 
-                                              severity=Severity.warning, 
-                                              properties=booking_details.__dict__)
+
             await step_context.context.send_activity(prompt_sorry_msg)
 
         return await step_context.end_dialog()

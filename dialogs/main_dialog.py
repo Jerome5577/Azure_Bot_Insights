@@ -4,7 +4,9 @@
 from botbuilder.dialogs import (
     ComponentDialog, WaterfallDialog,
     WaterfallStepContext, DialogTurnResult)
+
 from botbuilder.dialogs.prompts import TextPrompt, PromptOptions
+
 from botbuilder.core import MessageFactory, BotTelemetryClient, NullTelemetryClient
 from botbuilder.schema import InputHints, Attachment
 import json, re
@@ -96,17 +98,8 @@ class MainDialog(ComponentDialog):
         # the Result here will be null.
         if step_context.result is not None:
             result = step_context.result
-            print('Final result : ', result)
+            #print('Final result : ', result)
             
-            # Now we have all the booking details call the booking service.
-            # msg = (
-                # f"Your flight from {result.origin} to {result.destination} "
-                # f"at the rate of {result.budget} is booked : "
-                # f"Departure date on {result.start_date} - "
-                # f"Return date on {result.end_date}.")
-            # reformulation_msg = MessageFactory.text(msg, msg, InputHints.ignoring_input)
-            # await step_context.context.send_activity(reformulation_msg)
-
             card = self.create_adaptive_card_attachment(result)
             response = MessageFactory.attachment(card)
             await step_context.context.send_activity(response)
