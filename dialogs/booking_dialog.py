@@ -17,7 +17,7 @@ from .start_date_resolver_dialog import StartDateResolverDialog
 from .end_date_resolver_dialog import EndDateResolverDialog
 
 
-class BookingDialogV2(CancelAndHelpDialog):
+class BookingDialog(CancelAndHelpDialog):
     """Flight booking implementation."""
 
     # ==== Initialization === #
@@ -26,8 +26,8 @@ class BookingDialogV2(CancelAndHelpDialog):
         dialog_id: str = None,
         telemetry_client: BotTelemetryClient = NullTelemetryClient()):
 
-        super(BookingDialogV2, self).__init__(
-            dialog_id or BookingDialogV2.__name__, telemetry_client)
+        super(BookingDialog, self).__init__(
+            dialog_id or BookingDialog.__name__, telemetry_client)
         self.telemetry_client = telemetry_client
 
         text_prompt = TextPrompt(TextPrompt.__name__)
