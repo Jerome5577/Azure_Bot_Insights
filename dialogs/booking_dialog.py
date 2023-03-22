@@ -155,7 +155,7 @@ class BookingDialog(CancelAndHelpDialog):
         
         msg = (
             f"Please confirm, your travel from: { booking_details.origin } to: { booking_details.destination }"
-            f"Depature date on: { booking_details.start_travel_date } to the: { booking_details.end_travel_date}"
+            f"Depature date on: { booking_details.start_date } to the: { booking_details.end_date}"
             f"And for a budget of: { booking_details.budget }."
         )
 
