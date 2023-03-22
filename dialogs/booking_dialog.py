@@ -154,16 +154,15 @@ class BookingDialog(CancelAndHelpDialog):
         booking_details.budget = step_context.result
         
         msg = (
-            f"Please confirm that you would like to book a flight from { booking_details.origin } "
-            f"to { booking_details.destination }, "
-            f"starting on { booking_details.start_date} and ending on {booking_details.end_date}, "
-            f"for a budget of {booking_details.budget}.")
-        
-        # Offer a YES/NO prompt.
-        #prompt_message = MessageFactory.text(msg, msg, InputHints.expecting_input)
-        #return await step_context.prompt(ConfirmPrompt.__name__, PromptOptions(prompt=prompt_message))
-        return await step_context.prompt(ConfirmPrompt.__name__, PromptOptions(prompt=MessageFactory.text(msg) ))
+            f"Please confirm, your travel from: { booking_details.origin } to: { booking_details.destination }"
+            f"Depature date on: { booking_details.start_travel_date } to the: { booking_details.end_travel_date}"
+            f"And for a budget of: { booking_details.budget }."
+        )
 
+        # YES/NO prompt.
+        return await step_context.prompt(
+            ConfirmPrompt.__name__, PromptOptions(prompt=MessageFactory.text(msg))
+        )
     
     # ==== Final ==== #
     async def final_step(self, step_context: WaterfallStepContext) -> DialogTurnResult:
