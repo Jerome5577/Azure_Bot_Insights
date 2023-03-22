@@ -136,7 +136,7 @@ class BookingDialog(CancelAndHelpDialog):
         booking_details.end_date = step_context.result
 
         if booking_details.budget is None:
-            msg = "And what about the budget ?"
+            msg = "I didn;t notice information for the budget, can you tell me ?"
             prompt_message = MessageFactory.text(msg, msg, InputHints.expecting_input)
             return await step_context.prompt(TextPrompt.__name__, PromptOptions(prompt=prompt_message))  # pylint: disable=line-too-long,bad-continuation
 
@@ -153,15 +153,16 @@ class BookingDialog(CancelAndHelpDialog):
         # Capture the results of the previous step's prompt
         booking_details.budget = step_context.result
         
-        # Offer a YES/NO prompt.
         msg = (
             f"Please confirm that you would like to book a flight from { booking_details.origin } "
             f"to { booking_details.destination }, "
             f"starting on { booking_details.start_date} and ending on {booking_details.end_date}, "
             f"for a budget of {booking_details.budget}.")
         
+        # Offer a YES/NO prompt.
         prompt_message = MessageFactory.text(msg, msg, InputHints.expecting_input)
-        return await step_context.prompt(ConfirmPrompt.__name__, PromptOptions(prompt=prompt_message))
+        #return await step_context.prompt(ConfirmPrompt.__name__, PromptOptions(prompt=prompt_message))
+        return await step_context.prompt(ConfirmPrompt.__name__, PromptOptions(prompt=MessageFactory.text(prompt_message) ))
 
     
     # ==== Final ==== #
@@ -182,20 +183,16 @@ class BookingDialog(CancelAndHelpDialog):
         # If OK
         if step_context.result:
             # Track YES data
-            self.telemetry_client.track_trace("YES answer", 
-                                              booking_details,
-                                              "VALID")
-            self.telemetry_client.track_trace("CHAT_HISTORY_VALID", 
-                                              self.chat_history, 
-                                              "VALID")
+            self.telemetry_client.track_trace("YES answer", properties,"VALID")
+            self.telemetry_client.track_trace("CHAT_HISTORY_VALID", self.chat_history, "VALID")
             return await step_context.end_dialog(booking_details)
         
         # If Not OK
         else:
-            sorry_msg = "Sorry for not answering your wishes. Bye"
+            sorry_msg = "Sorry for not answering your wishes."
             prompt_sorry_msg = MessageFactory.text(sorry_msg, sorry_msg, InputHints.ignoring_input)
 
-            self.telemetry_client.track_trace("NO answer", booking_details, "ERROR")
+            self.telemetry_client.track_trace("NO answer", properties, "ERROR")
             self.telemetry_client.track_trace("CHAT_HISTORY_ERROR", self.chat_history, "ERROR")
 
             await step_context.context.send_activity(prompt_sorry_msg)

@@ -63,9 +63,7 @@ class StartDateResolverDialog(CancelAndHelpDialog):
             return await step_context.prompt(DateTimePrompt.__name__, PromptOptions(prompt=reprompt_msg))
 
         return await step_context.next(DateTimeResolution(timex=timex))
-        return await step_context.next(timex=reprompt_msg)
-
-    
+ 
     # ==== Final Step ==== #
     async def final_step(self, step_context: WaterfallStepContext):
         """Cleanup - set final return value and end dialog."""

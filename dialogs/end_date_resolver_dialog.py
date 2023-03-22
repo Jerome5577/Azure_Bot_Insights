@@ -58,7 +58,7 @@ class EndDateResolverDialog(CancelAndHelpDialog):
                 PromptOptions(prompt=prompt_msg, retry_prompt=reprompt_msg))
 
         # Scenario 2: We have a date -> Check if it is ambiguous
-        if "definite" in Timex(timex).types:
+        if "X" in timex:
             # This is essentially a "reprompt" of the data we were given up front.
             return await step_context.prompt(DateTimePrompt.__name__, PromptOptions(prompt=reprompt_msg))
 
@@ -68,11 +68,9 @@ class EndDateResolverDialog(CancelAndHelpDialog):
     # ==== Final Step ==== #
     async def final_step(self, step_context: WaterfallStepContext):
         """Cleanup - set final return value and end dialog."""
-        
         timex = step_context.result[0].timex
         return await step_context.end_dialog(timex)
 
-    
     
     @staticmethod
     async def datetime_prompt_validator(prompt_context: PromptValidatorContext) -> bool:
@@ -81,7 +79,7 @@ class EndDateResolverDialog(CancelAndHelpDialog):
         if prompt_context.recognized.succeeded:
             timex = prompt_context.recognized.value[0].timex.split("T")[0]
 
-            # TODO: Needs TimexProperty
+            #TODO:Needs TimexProperty
             return "definite" in Timex(timex).types
 
         return False
