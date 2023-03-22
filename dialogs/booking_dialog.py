@@ -160,9 +160,9 @@ class BookingDialog(CancelAndHelpDialog):
             f"for a budget of {booking_details.budget}.")
         
         # Offer a YES/NO prompt.
-        prompt_message = MessageFactory.text(msg, msg, InputHints.expecting_input)
-        return await step_context.prompt(ConfirmPrompt.__name__, PromptOptions(prompt=prompt_message))
-        #return await step_context.prompt(ConfirmPrompt.__name__, PromptOptions(prompt=MessageFactory.text(prompt_message) ))
+        #prompt_message = MessageFactory.text(msg, msg, InputHints.expecting_input)
+        #return await step_context.prompt(ConfirmPrompt.__name__, PromptOptions(prompt=prompt_message))
+        return await step_context.prompt(ConfirmPrompt.__name__, PromptOptions(prompt=MessageFactory.text(msg) ))
 
     
     # ==== Final ==== #
